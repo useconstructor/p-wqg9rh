@@ -1,9 +1,5 @@
 import type { NextConfig } from "next";
-
 const nextConfig: NextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  outputFileTracingIncludes: { "/*": ["./migrations/*.sql"] },
 };
-
 export default nextConfig;

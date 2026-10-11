@@ -1,0 +1,13 @@
+{
+  "primaryColor": "#F3F5F8",
+  "secondaryColor": "#FFFFFF",
+  "backgroundColor": "#F3F5F8",
+  "textColor": "#172235",
+  "accentColor": "#2454D6",
+  "fontHeading": "IBM Plex Sans",
+  "fontBody": "IBM Plex Mono",
+  "borderRadius": "0.375rem",
+  "logoText": "Inventario Taller",
+  "logoImageUrl": "https://vabacntbfcwhgkjqajcw.supabase.co/storage/v1/object/public/screenshots/projects/P-WQG9RH/logo.png",
+  "tone": "professional"
+}

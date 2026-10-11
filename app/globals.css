@@ -1,33 +1,94 @@
 @import "tailwindcss";
-
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
 @theme {
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-  --color-background: oklch(1 0 0);
-  --color-foreground: oklch(0.145 0 0);
-  --color-card: oklch(1 0 0);
-  --color-card-foreground: oklch(0.145 0 0);
-  --color-primary: oklch(0.205 0 0);
-  --color-primary-foreground: oklch(0.985 0 0);
-  --color-secondary: oklch(0.97 0 0);
-  --color-secondary-foreground: oklch(0.205 0 0);
-  --color-muted: oklch(0.97 0 0);
-  --color-muted-foreground: oklch(0.556 0 0);
-  --color-accent: oklch(0.97 0 0);
-  --color-accent-foreground: oklch(0.205 0 0);
-  --color-destructive: oklch(0.577 0.245 27.325);
-  --color-border: oklch(0.922 0 0);
-  --color-input: oklch(0.922 0 0);
-  --color-ring: oklch(0.708 0 0);
+  --font-sans: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --color-background: #f3f5f8;
+  --color-foreground: #172235;
+  --color-card: #ffffff;
+  --color-primary: #2454d6;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #ffffff;
+  --color-muted: #f3f5f8;
+  --color-muted-foreground: #5d687a;
+  --color-accent: #ebf0ff;
+  --color-accent-foreground: #2454d6;
+  --color-destructive: #b42318;
+  --color-border: #e1e5ec;
+  --color-input: #d8dee8;
+  --color-ring: #2454d6;
+  --color-success: #287052;
+  --color-warning: #956017;
   --radius: 0.5rem;
 }
-
 @layer base {
   * {
     border-color: var(--color-border);
   }
   body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    @apply outline-offset-4;
+  }
+  button,
+  select {
+    @apply cursor-pointer;
+  }
+  button:disabled {
+    @apply cursor-not-allowed;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+  }
+  ::selection {
+    @apply bg-primary/15;
+  }
+}
+@layer components {
+  .control {
+    @apply h-11 rounded-lg border border-input bg-white px-3 text-sm transition-colors duration-150 focus:border-primary;
+  }
+  .label {
+    @apply mb-2 block text-sm font-medium;
+  }
+  .eyebrow {
+    @apply font-mono text-[10px] font-medium uppercase tracking-[.14em] text-muted-foreground;
+  }
+  .panel {
+    @apply rounded-xl border border-border bg-white;
+  }
+  .icon-button {
+    @apply flex size-11 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors duration-150 hover:bg-accent hover:text-primary;
+  }
+  .reveal {
+    animation: reveal 0.16s ease-out;
+  }
+}
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
   }
 }
