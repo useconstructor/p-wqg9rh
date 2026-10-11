@@ -2,6 +2,12 @@
 
 Implemented the Spanish inventory workspace with products, deduplicated categories, calculated totals, search and combined URL filters, sorting, eight item pagination, shareable product detail, immutable movement history, and accessible create/edit/movement forms. Inventory starts empty; there are no seeds or demo records.
 
+## Focused correction (2026-10-11)
+
+Preserved inventory APIs, schema, server validation, and Turso persistence. Mobile/tablet headers show Inventario Taller, with Movimientos below on history pages. Captions, IDs, table headers, and footer are at least 12px; meaningful controls at least 14px; inputs/selects 16px. Mobile cards and margins are compact, and tablet totals align. Invalid quantities show a clear invalid preview with current stock unchanged.
+
+Production build and ESLint passed. The extended Chromium flow passed against isolated local SQLite with explicitly labelled QA records: create/edit, entry/exit, invalid preview, rejected overdraw with unchanged database values, search/category/low-stock/reload, history, idempotency, concurrency, discard, reduced motion, and failed saves. Responsive checks passed at 320, 390, and 820px: full titles, minimum text/input sizes, aligned tablet totals, first mobile product visible, and no inventory/history overflow. Desktop, tablet, mobile, history, and invalid-preview screenshots were reviewed. Caption/status/error palette contrast exceeds 4.5:1 on their backgrounds. The QA server and disposable database were removed after verification.
+
 ## Persistence
 
 Set `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` in the server environment. Schema migrations run idempotently before database access. Credentials and the libSQL client stay in server modules. Product creation and positive initial stock movements are committed together. Entries and exits use write transactions, conditional updates, database CHECK constraints, and unique movement idempotency keys. Editing a product cannot change stock.

@@ -306,7 +306,7 @@ function InventoryWorkspace({
             </div>
             <div>
               <p className="text-xs font-medium">Mi taller</p>
-              <p className="text-[10px] text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 Control de inventario
               </p>
             </div>
@@ -333,13 +333,18 @@ function InventoryWorkspace({
               size={14}
               className="hidden text-muted-foreground sm:block"
             />
-            <span className="font-medium">
-              {history ? "Movimientos" : "Inventario"}
-            </span>
+            <div className="leading-tight">
+              <span className="block text-base font-semibold lg:hidden">
+                Inventario Taller
+              </span>
+              <span className={history ? "block text-xs font-medium lg:text-sm" : "hidden font-medium lg:block"}>
+                {history ? "Movimientos" : "Inventario"}
+              </span>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <span
-              className={`hidden items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] sm:flex ${readError ? "text-warning" : "text-muted-foreground"}`}
+              className={`hidden items-center gap-2 rounded-full border px-3 py-1.5 text-xs sm:flex ${readError ? "text-warning" : "text-muted-foreground"}`}
             >
               <span
                 className={`size-1.5 rounded-full ${readError ? "bg-warning" : "bg-success"}`}
@@ -383,10 +388,10 @@ function InventoryWorkspace({
         </nav>
         <main
           id="main"
-          className="mx-auto max-w-[1540px] px-4 py-7 sm:px-8 sm:py-9 xl:px-10"
+          className="mx-auto max-w-[1540px] px-4 py-5 sm:px-8 sm:py-9 xl:px-10"
         >
           <div
-            className={`mb-7 flex flex-wrap items-center justify-between gap-4 ${selectedId ? "hidden md:flex" : ""}`}
+            className={`mb-5 flex flex-wrap items-center justify-between gap-3 sm:mb-7 sm:gap-4 ${selectedId ? "hidden md:flex" : ""}`}
           >
             <div>
               <div className="eyebrow mb-2 flex items-center gap-2">
@@ -449,7 +454,7 @@ function InventoryWorkspace({
           {!history && (
             <section
               aria-label="Resumen del inventario"
-              className={`mb-7 grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4 ${selectedId ? "hidden md:grid" : ""}`}
+              className={`mb-5 grid grid-cols-1 gap-2 sm:mb-7 sm:grid-cols-3 sm:gap-4 ${selectedId ? "hidden md:grid" : ""}`}
             >
               {[
                 {
@@ -481,19 +486,19 @@ function InventoryWorkspace({
               ].map((s, i) => (
                 <div
                   key={s.label}
-                  className="panel relative flex items-center gap-4 p-5 sm:block sm:p-6"
+                  className="panel relative flex items-center gap-4 px-4 py-2.5 sm:flex-col sm:items-stretch sm:gap-0 sm:p-6"
                 >
-                  <div className="flex flex-1 items-center justify-between">
-                    <span className="text-[13px] text-muted-foreground">
+                  <div className="flex flex-1 items-center justify-between gap-2 sm:min-h-10 sm:flex-none">
+                    <span className="text-[13px] leading-5 text-muted-foreground">
                       {s.label}
                     </span>
                     <div
-                      className={`hidden size-9 items-center justify-center rounded-lg sm:flex ${s.bg} ${s.color}`}
+                      className={`hidden size-9 shrink-0 items-center justify-center rounded-lg sm:flex ${s.bg} ${s.color}`}
                     >
                       <s.icon size={19} strokeWidth={1.6} />
                     </div>
                   </div>
-                  <p className="font-mono text-[32px] font-medium leading-tight tracking-tight sm:mt-3">
+                  <p className="font-mono text-2xl font-medium leading-tight tracking-tight sm:mt-3 sm:text-[32px]">
                     {loading ? "…" : number(s.value)}
                   </p>
                   <div className="mt-3 hidden items-center gap-1.5 text-xs text-muted-foreground sm:flex">
@@ -515,12 +520,12 @@ function InventoryWorkspace({
               className={`panel min-w-0 overflow-hidden ${selectedId ? "hidden md:block" : ""}`}
               aria-label={history ? "Historial" : "Productos"}
             >
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b px-5 py-5 sm:px-6">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3 sm:px-6 sm:py-5">
                 <div className="flex items-center gap-3">
                   <h2 className="text-base font-semibold">
                     {history ? "Historial de movimientos" : "Productos"}
                   </h2>
-                  <span className="rounded-md bg-background px-2 py-1 font-mono text-[11px] text-muted-foreground">
+                  <span className="rounded-md bg-background px-2 py-1 font-mono text-xs text-muted-foreground">
                     {history ? data.movements.length : data.products.length}
                   </span>
                 </div>
@@ -632,7 +637,7 @@ function InventoryWorkspace({
                   <>
                     <div className="hidden overflow-hidden md:block">
                       <table className="w-full text-left text-sm">
-                        <thead className="h-11 bg-background/70 text-[11px] text-muted-foreground">
+                        <thead className="h-11 bg-background/70 text-xs text-muted-foreground">
                           <tr>
                             <th className="px-6 font-medium">
                               Producto / motivo
@@ -747,11 +752,11 @@ function InventoryWorkspace({
                 <>
                   <div className="hidden md:block">
                     <table className="w-full table-fixed text-left text-sm">
-                      <thead className="h-11 bg-background/70 text-[11px] text-muted-foreground">
+                      <thead className="h-11 bg-background/70 text-xs text-muted-foreground">
                         <tr>
                           <th className="w-[28%] pl-6 font-medium">
                             <button
-                              className="flex h-11 items-center gap-2"
+                              className="flex h-11 items-center gap-2 text-sm"
                               onClick={() =>
                                 filter(
                                   "sort",
@@ -768,7 +773,7 @@ function InventoryWorkspace({
                           </th>
                           <th className="w-[13%] px-2 font-medium">
                             <button
-                              className="flex h-11 items-center gap-1"
+                              className="flex h-11 items-center gap-1 text-sm"
                               onClick={() =>
                                 filter(
                                   "sort",
@@ -800,7 +805,7 @@ function InventoryWorkspace({
                               >
                                 {p.name}
                               </button>
-                              <p className="mt-1 font-mono text-[10px] text-muted-foreground">
+                              <p className="mt-1 font-mono text-xs text-muted-foreground">
                                 #{p.id.slice(0, 8).toUpperCase()}
                               </p>
                             </td>
@@ -945,7 +950,7 @@ function InventoryWorkspace({
                       </label>
                       <select
                         id="sort"
-                        className="mr-1 h-11 max-w-[135px] bg-transparent text-xs"
+                        className="mr-1 h-11 max-w-[150px] bg-transparent text-base"
                         value={sort}
                         onChange={(e) => filter("sort", e.target.value)}
                       >
@@ -1087,7 +1092,7 @@ function InventoryWorkspace({
                               <p className="mt-1 break-words text-xs text-muted-foreground">
                                 {m.reason}
                               </p>
-                              <p className="mt-1 text-[10px] text-muted-foreground">
+                              <p className="mt-1 text-xs text-muted-foreground">
                                 {date(m.created_at)} · {m.previous_stock} →{" "}
                                 {m.resulting_stock}
                               </p>
@@ -1103,7 +1108,7 @@ function InventoryWorkspace({
                       )}
                       <Link
                         href={`/movements?product=${selected.id}`}
-                        className="mt-2 flex min-h-11 items-center gap-2 text-xs font-medium text-primary"
+                        className="mt-2 flex min-h-11 items-center gap-2 text-sm font-medium text-primary"
                       >
                         Ver historial completo
                         <ArrowRight size={14} />
@@ -1133,16 +1138,16 @@ function InventoryWorkspace({
               </span>
               <Link
                 href="/movements"
-                className="flex min-h-11 items-center gap-2 font-medium text-primary"
+                className="flex min-h-11 items-center gap-2 text-sm font-medium text-primary"
               >
                 Consultar movimientos
                 <ArrowRight size={14} />
               </Link>
             </div>
           )}
-          <footer className="mt-9 flex items-center justify-between border-t pt-5 text-[10px] text-muted-foreground">
+          <footer className="mt-9 flex items-center justify-between border-t pt-5 text-xs text-muted-foreground">
             <span>
-              Inventario Taller <span className="mx-2 text-border">/</span> Un
+              Inventario Taller <span className="mx-2 text-muted-foreground">/</span> Un
               lugar para cada pieza.
             </span>
             <span className="hidden items-center gap-1.5 sm:flex">
@@ -1203,7 +1208,7 @@ function Empty({
       </p>
       {action}
       {icon === "product" && (
-        <div className="mt-7 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+        <div className="mt-7 flex items-center gap-1.5 text-xs text-muted-foreground">
           <Check size={13} />
           Productos, existencias y movimientos en un solo lugar
         </div>
@@ -1333,6 +1338,9 @@ function ProductDialog({
       lock.current = false;
     }
   }
+  const quantityError = fields.quantity
+    ? validateMovement(fields, p?.stock ?? 0, modal.kind).quantity
+    : undefined;
   const result =
     (p?.stock ?? 0) +
     (modal.kind === "out" ? -1 : 1) * (Number(fields.quantity) || 0);
@@ -1472,7 +1480,7 @@ function ProductDialog({
                         aria-describedby={
                           errors.reason ? "error-reason" : undefined
                         }
-                        className="w-full resize-y rounded-lg border bg-white px-3 py-3 text-sm"
+                        className="w-full resize-y rounded-lg border bg-white px-3 py-3 text-base"
                       />
                       {errors.reason && (
                         <p
@@ -1484,15 +1492,26 @@ function ProductDialog({
                       )}
                     </div>
                     <div
-                      className={`flex items-center justify-between rounded-lg border p-4 ${result < 0 ? "border-destructive bg-red-50" : "border-primary/20 bg-accent/50"}`}
+                      role="status"
+                      aria-live="polite"
+                      className={`rounded-lg border p-4 ${quantityError ? "border-destructive bg-red-50" : "border-primary/20 bg-accent/50"}`}
                     >
-                      <span className="text-sm">Existencias después</span>
-                      <span className="font-mono text-xl">
-                        {result}{" "}
-                        <span className="font-sans text-xs text-muted-foreground">
-                          unidades
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-sm">
+                          {quantityError ? "Existencias sin cambios" : "Existencias después"}
                         </span>
-                      </span>
+                        <span className="font-mono text-xl">
+                          {quantityError ? p?.stock : result}{" "}
+                          <span className="font-sans text-xs text-muted-foreground">
+                            unidades
+                          </span>
+                        </span>
+                      </div>
+                      {quantityError && (
+                        <p className="mt-2 text-sm text-destructive">
+                          {modal.kind === "out" ? "Salida no válida" : "Entrada no válida"}: {quantityError}
+                        </p>
+                      )}
                     </div>
                     {confirm && (
                       <div

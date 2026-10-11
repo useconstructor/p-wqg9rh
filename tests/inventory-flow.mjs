@@ -68,12 +68,20 @@ if (!baseURL)
   await page.reload();
   await page.getByRole("button", { name: "Salida", exact: true }).click();
   await page.getByLabel("Cantidad", { exact: true }).fill("99");
+  const preview = page.getByRole("status").filter({ hasText: "Salida no válida" });
+  await preview.waitFor();
+  assert.match(await preview.innerText(), /Existencias sin cambios\s+15 unidades/);
+  assert.doesNotMatch(await preview.innerText(), /-84/);
   await page.getByLabel("Motivo").fill("Verificación de salida");
   await page.getByRole("button", { name: "Revisar movimiento" }).click();
   await page
-    .getByText("La cantidad supera las existencias disponibles.")
+    .getByText("La cantidad supera las existencias disponibles.", { exact: true })
     .waitFor();
+  let unchanged = await (await page.request.get("/api/inventory")).json();
+  assert.equal(unchanged.products[0].stock, 15);
+  assert.equal(unchanged.movements.length, 2);
   await page.getByLabel("Cantidad", { exact: true }).fill("3");
+  await page.getByRole("status").filter({ hasText: "Existencias después" }).waitFor();
   await page.getByRole("button", { name: "Revisar movimiento" }).click();
   await page
     .getByRole("button", { name: "Confirmar salida de 3 unidades" })
@@ -165,6 +173,7 @@ if (!baseURL)
   for (const [name, width, height] of [
     ["tablet", 820, 1100],
     ["mobile", 390, 844],
+    ["small-mobile", 320, 740],
   ]) {
     await page.setViewportSize({ width, height });
     await page.goto(baseURL + "/");
@@ -178,13 +187,36 @@ if (!baseURL)
       ),
       `${name} overflow`,
     );
+    await page.locator("header").getByText("Inventario Taller", { exact: true }).waitFor();
+    const tinyText = await page.evaluate(() =>
+      [...document.querySelectorAll("body *")]
+        .filter((el) => el.getClientRects().length && getComputedStyle(el).visibility !== "hidden" && !el.closest("[inert]") && !el.classList.contains("sr-only") && [...el.childNodes].some((n) => n.nodeType === Node.TEXT_NODE && n.textContent.trim()))
+        .filter((el) => parseFloat(getComputedStyle(el).fontSize) < 12)
+        .map((el) => el.textContent.trim()),
+    );
+    assert.deepEqual(tinyText, [], `${name}: undersized text`);
+    if (name === "tablet") {
+      const tops = await page.locator('section[aria-label="Resumen del inventario"] > div > p').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().top));
+      assert(Math.max(...tops) - Math.min(...tops) < 1, "Tablet totals must align");
+    } else {
+      const firstProduct = page.locator('section[aria-label="Productos"] article').first();
+      assert((await firstProduct.boundingBox()).y < height, `${name}: first product below viewport`);
+    }
     await page.getByRole("button", { name: "Nuevo producto" }).click();
+    const inputSizes = await page.locator('[role="dialog"] input').evaluateAll((els) => els.map((el) => parseFloat(getComputedStyle(el).fontSize)));
+    assert(inputSizes.every((size) => size >= 16), "Form inputs must be at least 16px");
     await page.getByLabel("Nombre del producto").fill("QA sin guardar");
     await page.keyboard.press("Escape");
     await page
       .getByRole("heading", { name: "¿Descartar los cambios?" })
       .waitFor();
     await page.getByRole("button", { name: "Descartar cambios" }).click();
+    await page.goto(baseURL + "/movements");
+    await page.locator("header").getByText("Inventario Taller", { exact: true }).waitFor();
+    await page.locator("header").getByText("Movimientos", { exact: true }).waitFor();
+    assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${name}: movements overflow`);
+    await page.screenshot({ path: `/tmp/inventario-${name}-movements.png`, fullPage: true });
+    await page.goto(baseURL + "/");
   }
   await page.emulateMedia({ reducedMotion: "reduce" });
   assert.equal(

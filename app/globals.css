@@ -55,13 +55,16 @@
 }
 @layer components {
   .control {
-    @apply h-11 rounded-lg border border-input bg-white px-3 text-sm transition-colors duration-150 focus:border-primary;
+    @apply h-11 rounded-lg border border-input bg-white px-3 text-base transition-colors duration-150 focus:border-primary;
+  }
+  button.control {
+    @apply text-sm;
   }
   .label {
     @apply mb-2 block text-sm font-medium;
   }
   .eyebrow {
-    @apply font-mono text-[10px] font-medium uppercase tracking-[.14em] text-muted-foreground;
+    @apply font-mono text-xs font-medium uppercase tracking-[.14em] text-muted-foreground;
   }
   .panel {
     @apply rounded-xl border border-border bg-white;
